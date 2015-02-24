@@ -25,12 +25,17 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.LineBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main extends JFrame {
 
     private JPanel contentPane;
     private JPanel panelSplash;
     private JPanel panelCharacter;
+    private JButton btnNextCharacter;
+    private JButton btnPreviousCharacter;
     
     
     private final String[] names = {"images/bgSplash3.png",     // 0 - Splash screen background. http://pichost.me/1646676/
@@ -98,6 +103,13 @@ public class Main extends JFrame {
         contentPane.add(panelCharacter, "name_182023997481703");
         panelCharacter.setLayout(null);
         
+        JLabel lblBlackBox = new JLabel("");
+        lblBlackBox.setIcon(new ImageIcon(Main.class.getResource("/images/hunter_stats.png")));
+        lblBlackBox.setBackground(Color.BLACK);
+        lblBlackBox.setBorder(null);
+        lblBlackBox.setBounds(103, 232, 439, 231);
+        panelCharacter.add(lblBlackBox);
+        
         JLabel lblEnterName = new JLabel("Enter Name:");
         lblEnterName.setForeground(Color.WHITE);
         lblEnterName.setFont(new Font("Algerian", Font.PLAIN, 23));
@@ -116,6 +128,42 @@ public class Main extends JFrame {
         textName.setBounds(223, 172, 275, 26);
         panelCharacter.add(textName);
         textName.setColumns(10);
+        
+        btnNextCharacter = new JButton("");
+        btnNextCharacter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent arg0) {
+                btnNextCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/arrow_big.png")));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnNextCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/arrow.png")));
+            }
+        });
+        btnNextCharacter.setBorderPainted(false);
+        btnNextCharacter.setContentAreaFilled(false);
+        btnNextCharacter.setOpaque(false);
+        btnNextCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/arrow.png")));
+        btnNextCharacter.setBounds(538, 290, 83, 87);
+        panelCharacter.add(btnNextCharacter);
+        
+        btnPreviousCharacter = new JButton("");
+        btnPreviousCharacter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnPreviousCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/left_arrow_big.png")));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnPreviousCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/left_arrow.png")));
+            }
+        });
+        btnPreviousCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/left_arrow.png")));
+        btnPreviousCharacter.setOpaque(false);
+        btnPreviousCharacter.setContentAreaFilled(false);
+        btnPreviousCharacter.setBorderPainted(false);
+        btnPreviousCharacter.setBounds(10, 290, 83, 87);
+        panelCharacter.add(btnPreviousCharacter);
         
         JLabel lblbackground2 = new JLabel("");
         lblbackground2.setIcon(new ImageIcon(Main.class.getResource("/images/background2.png")));
