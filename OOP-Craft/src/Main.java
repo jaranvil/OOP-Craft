@@ -31,20 +31,35 @@ import java.awt.event.MouseEvent;
 
 public class Main extends JFrame {
 
+    //properties
     private JPanel contentPane;
     private JPanel panelSplash;
     private JPanel panelCharacter;
     private JButton btnNextCharacter;
     private JButton btnPreviousCharacter;
+    private JLabel lblCharacterStats;
+    private JTextField textName;
     
+    private int characterStatsArrayIndex = 0;
     
+    //icon arrays
     private final String[] names = {"images/bgSplash3.png",     // 0 - Splash screen background. http://pichost.me/1646676/
                                     "images/title.png"};               // 1 - http://textcraft.net/
     private Icon[] icon = {
         new ImageIcon(getClass().getResource(names[0])),
         new ImageIcon(getClass().getResource(names[1])),
     }; //end icon array
-    private JTextField textName;
+    
+    
+    private final String[] characterStatImages = {"images/hunter_stats.png",     
+                                                "images/mage_stats.png"};          
+    private Icon[] characterStats = {
+        new ImageIcon(getClass().getResource(characterStatImages[0])),
+        new ImageIcon(getClass().getResource(characterStatImages[1])),
+    }; //end icon array
+    private JButton btnSelectCharacter;
+    private JButton btnCancel;
+    
 
     /**
      * Launch the application.
@@ -67,8 +82,10 @@ public class Main extends JFrame {
      * 
      */
     public Main() {
+        setTitle("OOPCraft");
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 683, 605);
+        setBounds(100, 100, 669, 599);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -78,15 +95,18 @@ public class Main extends JFrame {
         contentPane.add(panelSplash, "name_180325881387403");
         panelSplash.setLayout(null);
         
-        JButton btnStart = new JButton("Start");
+        JButton btnStart = new JButton("");
+        btnStart.setContentAreaFilled(false);
+        btnStart.setBorderPainted(false);
+        btnStart.setOpaque(false);
         btnStart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 panelSplash.setVisible(false);
                 panelCharacter.setVisible(true);
             }
         });
-        btnStart.setIcon(new ImageIcon(Main.class.getResource("/images/start.png")));
-        btnStart.setBounds(154, 304, 330, 106);
+        btnStart.setIcon(new ImageIcon(Main.class.getResource("/images/start_game.png")));
+        btnStart.setBounds(95, 260, 461, 49);
         panelSplash.add(btnStart);
         
         JLabel lblTitle = new JLabel("");
@@ -103,12 +123,12 @@ public class Main extends JFrame {
         contentPane.add(panelCharacter, "name_182023997481703");
         panelCharacter.setLayout(null);
         
-        JLabel lblBlackBox = new JLabel("");
-        lblBlackBox.setIcon(new ImageIcon(Main.class.getResource("/images/hunter_stats.png")));
-        lblBlackBox.setBackground(Color.BLACK);
-        lblBlackBox.setBorder(null);
-        lblBlackBox.setBounds(103, 232, 439, 231);
-        panelCharacter.add(lblBlackBox);
+        lblCharacterStats = new JLabel("");
+        lblCharacterStats.setIcon(characterStats[characterStatsArrayIndex]);
+        lblCharacterStats.setBackground(Color.BLACK);
+        lblCharacterStats.setBorder(null);
+        lblCharacterStats.setBounds(103, 232, 439, 231);
+        panelCharacter.add(lblCharacterStats);
         
         JLabel lblEnterName = new JLabel("Enter Name:");
         lblEnterName.setForeground(Color.WHITE);
@@ -130,6 +150,11 @@ public class Main extends JFrame {
         textName.setColumns(10);
         
         btnNextCharacter = new JButton("");
+        btnNextCharacter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                switchCharacter(true);
+            }
+        });
         btnNextCharacter.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent arg0) {
@@ -148,6 +173,11 @@ public class Main extends JFrame {
         panelCharacter.add(btnNextCharacter);
         
         btnPreviousCharacter = new JButton("");
+        btnPreviousCharacter.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                switchCharacter(false);
+            }
+        });
         btnPreviousCharacter.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -165,11 +195,80 @@ public class Main extends JFrame {
         btnPreviousCharacter.setBounds(10, 290, 83, 87);
         panelCharacter.add(btnPreviousCharacter);
         
+        btnSelectCharacter = new JButton("");
+        btnSelectCharacter.setIcon(new ImageIcon(Main.class.getResource("/images/select_button.png")));
+        btnSelectCharacter.setOpaque(false);
+        btnSelectCharacter.setContentAreaFilled(false);
+        btnSelectCharacter.setBorderPainted(false);
+        btnSelectCharacter.setBounds(375, 474, 199, 59);
+        panelCharacter.add(btnSelectCharacter);
+        
+        btnCancel = new JButton("");
+        btnCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                panelSplash.setVisible(true);
+                panelCharacter.setVisible(false);
+            }
+        });
+        btnCancel.setIcon(new ImageIcon(Main.class.getResource("/images/cancel_button.png")));
+        btnCancel.setOpaque(false);
+        btnCancel.setBorderPainted(false);
+        btnCancel.setContentAreaFilled(false);
+        btnCancel.setBounds(76, 474, 199, 59);
+        panelCharacter.add(btnCancel);
+        
         JLabel lblbackground2 = new JLabel("");
         lblbackground2.setIcon(new ImageIcon(Main.class.getResource("/images/background2.png")));
         lblbackground2.setBounds(0, 0, 657, 556);
         panelCharacter.add(lblbackground2);
         
 
+    }//end constructor
+    
+    
+    //select character panel
+    
+    public void switchCharacter(boolean next)
+    {
+        if(next)
+        {
+            if(characterStatsArrayIndex == characterStats.length-1)
+                characterStatsArrayIndex = 0;
+            else
+                characterStatsArrayIndex++;
+                    
+            lblCharacterStats.setIcon(characterStats[characterStatsArrayIndex]);
+        } else {
+            if(characterStatsArrayIndex == 0)
+                characterStatsArrayIndex = characterStats.length-1;
+            else
+                characterStatsArrayIndex--;
+            
+            lblCharacterStats.setIcon(characterStats[characterStatsArrayIndex]);
+        }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
